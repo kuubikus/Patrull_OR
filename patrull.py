@@ -36,44 +36,29 @@ costs = [
     ]
 
 def calculate_one_set(costs, day_number):
-    
-    num_soldiers = len(costs)
-    num_of_diff_tasks = len(costs[0])
-    num_of_shifts = len(costs[0][0])
+
+    num_workers = len(costs)
+    num_tasks = len(costs[0])
 
     # Solver
     # Create the mip solver with the SCIP backend.
     solver = pywraplp.Solver.CreateSolver("SCIP")
 
     if not solver:
-        return None
+        return
 
     # Variables
-    # x is a dictionary where a key points to a specifc soldier.
-    # Each soldier has m lists with length n, where 1 means he has that shift.
-    # m is the number of different tasks (post, patrole etc).
-    # n is the number of shifts during the period.
+    # x[i, j] is an array of 0-1 variables, which will be 1
+    # if worker i is assigned to task j.
     x = {}
-    for i in range(num_soldiers):
-        x[i] = [[] for n in range(num_of_diff_tasks)]
-        for l in range(num_of_shifts):
-            x[i].append(solver.IntVar(0, 1, ""))
+    for i in range(num_workers):
+        for j in range(num_tasks):
+            x[i, j] = solver.IntVar(0, 1, "")
 
-    
     # Constraints
-    # Each soldier is assigned to at most 3 shifts.
-    for i in range(num_soldiers):
-        shifts_done = 0
-        for j in range(num_of_diff_tasks):
-            shifts_done += solver.Sum([x[i][j][n] for n in range(num_of_shifts)])
-        solver.Add(shifts_done <= 3)
-
-    # Each soldier is assigned to at most 1 task at a time. E.g a soldier can't patrole twice
-    for i in range(num_soldiers):
-        tasks_done = 0
-        for j in range(num_of_diff_tasks):
-            solver.add(solver.)
-
+    # Each worker is assigned to at most 1 task.
+    for i in range(num_workers):
+        solver.Add(solver.Sum([x[i, j] for j in range(num_tasks)]) <= 1)
 
     # Each task is assigned to exactly one worker.
     for j in range(num_tasks):
@@ -96,12 +81,13 @@ def calculate_one_set(costs, day_number):
             for j in range(num_tasks):
                 # Test if x[i,j] is 1 (with tolerance for floating point arithmetic).
                 if x[i, j].solution_value() > 0.5:
-                    print(f"Worker {i} assigned to task {j} on day {day_number}." + f" Cost: {costs[i][j]}")
-        new_costs = update_costs(costs,x)
-        return new_costs
+                    print(f"Worker {i} assigned to task {j}." + f" Cost: {costs[i][j]}")
     else:
         print("No solution found.")
-        return False
+
+
+if __name__ == "__main__":
+    main()
 
 
 def main(no_of_days):
