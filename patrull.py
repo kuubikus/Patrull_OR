@@ -1,39 +1,33 @@
 from ortools.linear_solver import pywraplp
 
-def evaluate(j):
-    if j == 0:
-        return 10
-    if j == 1:
-        return 20
-    if j == 2:
-        return 20
-    if j == 3:
-        return 10
+def evaluate(shift, task, cost_of_shifts=[10,10,20,20,30,30,10,10], cost_of_tasks=[20,20,10]):
+    return cost_of_shifts[shift] + cost_of_tasks[task]
 
-def new_cost(i, soldiers,number_of_tasks):
+def new_cost(data, soldier,shift,number_of_tasks):
+    """
+    For a given soldier at a given shift returns the new costs.
+    """
     added_cost = [0 for x in range(number_of_tasks)]
-    for j in range(number_of_tasks):
-        # check if completed task j
-        if soldiers[i,j].solution_value() == 1:
-            added_cost[j] = evaluate(j)
+    for k in range(number_of_tasks):
+        # check if completed task k
+        if data[soldier,shift,k].solution_value() == 1:
+            added_cost[k] = evaluate(shift,k)
     return added_cost
     
 
-def update_costs(costs, soldiers):
-    num_soldiers = len(costs)
-    num_tasks = len(costs[0])
+def update_costs(costs, data):
+
+    number_of_soldiers = len(costs)
+    number_of_shifts = len(costs[0])
+    number_of_tasks = len(costs[0][0])
+
     res = []
-    for i in range(num_soldiers):
-        added_cost = new_cost(i,soldiers,num_tasks)
-        res.append([costs[i][j] + added_cost[j] for j in range(num_tasks)])
+    for i in range(number_of_soldiers):
+        for j in range(number_of_shifts):
+            added_cost = new_cost(data,i,j,number_of_tasks)
+            res.append([costs[i][j][k] + added_cost[k] for k in range(number_of_tasks)])
     return res
     
-costs = [
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0],
-        [0,0,0,0]
-    ]
 
 def calculate_one_set(costs, day_number):
 
@@ -51,22 +45,22 @@ def calculate_one_set(costs, day_number):
     # Variables
     # x[i, j, k] is an array of 0-1 variables, which will be 1
     # if soldier i is assigned to shift j and task k.
-    x = {}
+    data = {}
     for i in range(number_of_soldiers):
         for j in range(number_of_shifts):
             for k in range(number_of_tasks):
-                x[i, j, k] = solver.IntVar(0, 1, "")
+                data[i, j, k] = solver.IntVar(0, 1, "")
 
     # Constraints
     # Each task is assigned to exactly one worker
     for j in range(number_of_shifts):
         for k in range(number_of_tasks):
-            solver.Add(solver.Sum([x[i, j, k] for i in range(number_of_soldiers)]) == 1)
+            solver.Add(solver.Sum([data[i, j, k] for i in range(number_of_soldiers)]) == 1)
 
     # Each worker is assigned to at most 1 task at a given shift.
     for i in range(number_of_soldiers):
         for j in range(number_of_shifts):
-            solver.Add(solver.Sum([x[i, j, k] for k in range(number_of_tasks)]) <= 1)
+            solver.Add(solver.Sum([data[i, j, k] for k in range(number_of_tasks)]) <= 1)
     """
     for i in range(number_of_soldiers):
         res = 0
@@ -80,7 +74,7 @@ def calculate_one_set(costs, day_number):
     for i in range(number_of_soldiers):
         for j in range(number_of_shifts):
             for k in range(number_of_tasks):
-                objective_terms.append(costs[i][j][k] * x[i, j, k])
+                objective_terms.append(costs[i][j][k] * data[i, j, k])
     solver.Minimize(solver.Sum(objective_terms))
 
     # Solve
@@ -93,8 +87,10 @@ def calculate_one_set(costs, day_number):
             for j in range(number_of_shifts):
                 for k in range(number_of_tasks):
                     # Test if x[i,j,k] is 1 (with tolerance for floating point arithmetic).
-                    if x[i, j, k].solution_value() > 0.5:
+                    if data[i, j, k].solution_value() > 0.5:
                         print(f"Worker {i} assigned during shift {j} to task {k}." + f" Cost: {costs[i][j][k]}")
+        # calculate new costs
+        return update_costs(costs, data)
     else:
         print("No solution found.")
 
@@ -109,6 +105,7 @@ def main(no_of_days):
     ]
     for day_number in range(no_of_days):
         costs = calculate_one_set(costs,day_number)
+        print("new costs", costs)
 
 if __name__ == "__main__":
     main(1)
