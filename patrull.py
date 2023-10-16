@@ -1,39 +1,73 @@
 from ortools.linear_solver import pywraplp
 
-def evaluate(shift, task, cost_of_shifts=[10,10,20,20,30,30,10,10], cost_of_tasks=[20,20,10]):
+def evaluate(shift, task, cost_of_shifts=[10,10,20,20,30,30,30,10], cost_of_tasks=[20,20,10]):
     return cost_of_shifts[shift] + cost_of_tasks[task]
 
-def new_cost(data, soldier,shift,number_of_tasks):
+def new_cost(data, soldier,shift,tasks):
     """
     For a given soldier at a given shift returns the new costs.
     """
-    added_cost = [0 for x in range(number_of_tasks)]
-    for k in range(number_of_tasks):
+    added_cost = {}
+    for task in tasks:
         # check if completed task k
-        if data[soldier,shift,k].solution_value() == 1:
-            added_cost[k] = evaluate(shift,k)
+        if data[soldier,shift,task].solution_value() == 1:
+            added_cost[task] = evaluate(shift,task)
     return added_cost
     
 
-def update_costs(costs, data):
-
-    number_of_soldiers = len(costs)
-    number_of_shifts = len(costs[0])
-    number_of_tasks = len(costs[0][0])
+def update_costs(costs, data, names, shifts, tasks):
 
     res = []
-    for i in range(number_of_soldiers):
-        for j in range(number_of_shifts):
-            added_cost = new_cost(data,i,j,number_of_tasks)
-            res.append([costs[i][j][k] + added_cost[k] for k in range(number_of_tasks)])
+    for name in names:
+        for shift in shifts:
+            added_cost = new_cost(data,name,shift,tasks)
+            res.append([costs[name,shift,task] + added_cost[task] for task in tasks])
     return res
+
+
+def initialise_costs(names,shifts,tasks):
+    """
+    Initialises the cost dictionary. Assignes the 1st soldier at the first shift to the first task, 
+    2nd soldier at the first shift to the 2nd task, etc.
+    ---To Do---
+    Might not be the best suited as it might happen that some soldiers don't have to do anything 
+    during the first day.
+    """
+    costs = {}
+    N = len(shifts)*len(tasks)/len(names)
+    print("N",N)
+    tasks_assigned = []
+    for name in names:
+        soldier_slots = 0
+        shifts_assigned = []
+        last_task = None
+        for shift in shifts:
+            for task in tasks:
+                if (shift,task) not in tasks_assigned and shift not in shifts_assigned and soldier_slots < N and last_task != task:
+                    costs[name,shift,task] = 10
+                    tasks_assigned.append((shift,task))
+                    shifts_assigned.append(shift)
+                    soldier_slots += 1
+                    last_task = task
+                else:
+                    costs[name,shift,task] = 0
+
+    return costs
+
+
+names = ["A","B","C","D","E","F","G"]
+shifts = [1,2,3,4,5,6]
+tasks = ["Patrull", "Post"]
+
+"""
+cost = initialise_costs(names,shifts,tasks)
+with open('result.txt', 'w+') as fp:
+    for key in cost:
+        fp.write(str(key) + ': ' + str(cost[key]) + '\n')
+"""
     
 
-def calculate_one_set(costs, day_number):
-
-    number_of_soldiers = len(costs)
-    number_of_shifts = len(costs[0])
-    number_of_tasks = len(costs[0][0])
+def calculate_one_set(costs, names, shifts, tasks, day_number):
 
     # Solver
     # Create the mip solver with the SCIP backend.
@@ -43,24 +77,22 @@ def calculate_one_set(costs, day_number):
         return
 
     # Variables
-    # x[i, j, k] is an array of 0-1 variables, which will be 1
-    # if soldier i is assigned to shift j and task k.
     data = {}
-    for i in range(number_of_soldiers):
-        for j in range(number_of_shifts):
-            for k in range(number_of_tasks):
-                data[i, j, k] = solver.IntVar(0, 1, "")
+    for name in names:
+        for shift in shifts:
+            for task in tasks:
+                data[name, shift, task] = solver.IntVar(0, 1, "")
 
     # Constraints
-    # Each task is assigned to exactly one worker
-    for j in range(number_of_shifts):
-        for k in range(number_of_tasks):
-            solver.Add(solver.Sum([data[i, j, k] for i in range(number_of_soldiers)]) == 1)
+    # Each task is assigned to exactly one soldier
+    for shift in shifts:
+        for task in tasks:
+            solver.Add(solver.Sum([data[name, shift, task] for name in names]) == 1)
 
-    # Each worker is assigned to at most 1 task at a given shift.
-    for i in range(number_of_soldiers):
-        for j in range(number_of_shifts):
-            solver.Add(solver.Sum([data[i, j, k] for k in range(number_of_tasks)]) <= 1)
+    # Each soldier is assigned to at most 1 task at a given shift.
+    for name in names:
+        for shift in shifts:
+            solver.Add(solver.Sum([data[name, shift, task] for task in tasks]) <= 1)    
     """
     for i in range(number_of_soldiers):
         res = 0
@@ -71,10 +103,10 @@ def calculate_one_set(costs, day_number):
 
     # Objective
     objective_terms = []
-    for i in range(number_of_soldiers):
-        for j in range(number_of_shifts):
-            for k in range(number_of_tasks):
-                objective_terms.append(costs[i][j][k] * data[i, j, k])
+    for name in names:
+        for shift in shifts:
+            for task in tasks:
+                objective_terms.append(costs[name,shift,task] * data[name,shift,task])
     solver.Minimize(solver.Sum(objective_terms))
 
     # Solve
@@ -83,26 +115,22 @@ def calculate_one_set(costs, day_number):
     # Print solution.
     if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
         print(f"Total cost = {solver.Objective().Value()}\n")
-        for i in range(number_of_soldiers):
-            for j in range(number_of_shifts):
-                for k in range(number_of_tasks):
+        for name in names:
+            for shift in shifts:
+                for task in tasks:
                     # Test if x[i,j,k] is 1 (with tolerance for floating point arithmetic).
-                    if data[i, j, k].solution_value() > 0.5:
-                        print(f"Worker {i} assigned during shift {j} to task {k}." + f" Cost: {costs[i][j][k]}")
+                    if data[name,shift,task].solution_value() > 0.5:
+                        print(f"Soldier {name} assigned during shift {shift} to task {task}." + f" Cost: {costs[name,shift,task]}")
         # calculate new costs
         return update_costs(costs, data)
     else:
         print("No solution found.")
 
 
-def main(no_of_days):
-    # initialise 
-    costs = [
-        [[0,10],[10,10],[10,10],[10,0]],
-        [[10,10],[0,10],[10,0],[10,10]],
-        [[10,10],[10,0],[0,10],[10,10]],
-        [[10,0],[10,10],[10,10],[0,10]]
-    ]
+def main(no_of_days, names, shifts, tasks, costs=None):
+    # initialise costs for the first day if older costs not given
+    if costs == None:
+        costs = initialise_costs()
     for day_number in range(no_of_days):
         costs = calculate_one_set(costs,day_number)
         print("new costs", costs)
