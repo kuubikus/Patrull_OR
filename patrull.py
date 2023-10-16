@@ -1,6 +1,6 @@
 from ortools.linear_solver import pywraplp
 
-def evaluate(shift, task, cost_of_shifts=[10,10,20,20,30,30,30,10], cost_of_tasks=[20,20,10]):
+def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":20,"Ahi":10}):
     return cost_of_shifts[shift] + cost_of_tasks[task]
 
 def new_cost(data, soldier,shift,tasks):
@@ -12,17 +12,18 @@ def new_cost(data, soldier,shift,tasks):
         # check if completed task k
         if data[soldier,shift,task].solution_value() == 1:
             added_cost[task] = evaluate(shift,task)
+        if data[soldier,shift,task].solution_value() == 0:
+            added_cost[task] = 0
     return added_cost
     
 
 def update_costs(costs, data, names, shifts, tasks):
-
-    res = []
     for name in names:
         for shift in shifts:
             added_cost = new_cost(data,name,shift,tasks)
-            res.append([costs[name,shift,task] + added_cost[task] for task in tasks])
-    return res
+            for task in tasks:
+                costs[name,shift,task] += added_cost[task]
+    return costs
 
 
 def initialise_costs(names,shifts,tasks):
@@ -68,7 +69,6 @@ with open('result.txt', 'w+') as fp:
     
 
 def calculate_one_set(costs, names, shifts, tasks, day_number):
-
     # Solver
     # Create the mip solver with the SCIP backend.
     solver = pywraplp.Solver.CreateSolver("SCIP")
@@ -99,7 +99,8 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
         for k in range(number_of_tasks):
             
             res += solver.Sum([x[i, j, k] for k in range(number_of_shifts)])
-        solver.Add(res <= 1)"""
+        solver.Add(res <= 1)
+    """
 
     # Objective
     objective_terms = []
@@ -122,7 +123,7 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
                     if data[name,shift,task].solution_value() > 0.5:
                         print(f"Soldier {name} assigned during shift {shift} to task {task}." + f" Cost: {costs[name,shift,task]}")
         # calculate new costs
-        return update_costs(costs, data)
+        return update_costs(costs, data, names, shifts, tasks)
     else:
         print("No solution found.")
 
@@ -130,10 +131,10 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
 def main(no_of_days, names, shifts, tasks, costs=None):
     # initialise costs for the first day if older costs not given
     if costs == None:
-        costs = initialise_costs()
+        costs = initialise_costs(names,shifts,tasks)
     for day_number in range(no_of_days):
-        costs = calculate_one_set(costs,day_number)
+        costs = calculate_one_set(costs, names, shifts, tasks, day_number)
         print("new costs", costs)
 
 if __name__ == "__main__":
-    main(1)
+    main(1,names,shifts,tasks)
