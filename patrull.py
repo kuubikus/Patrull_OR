@@ -1,7 +1,11 @@
 from ortools.linear_solver import pywraplp
+import pandas as pd
+import matplotlib.pyplot as plt
+
 
 def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":20,"Ahi":10}):
     return cost_of_shifts[shift] + cost_of_tasks[task]
+
 
 def new_cost(data, soldier,shift,tasks):
     """
@@ -116,16 +120,63 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
     # Print solution.
     if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
         print(f"Total cost = {solver.Objective().Value()}\n")
+        data_copy = {}
         for name in names:
             for shift in shifts:
                 for task in tasks:
                     # Test if x[i,j,k] is 1 (with tolerance for floating point arithmetic).
+                    data_copy[name,shift,task] = data[name,shift,task].solution_value()
                     if data[name,shift,task].solution_value() > 0.5:
                         print(f"Soldier {name} assigned during shift {shift} to task {task}." + f" Cost: {costs[name,shift,task]}")
         # calculate new costs
-        return update_costs(costs, data, names, shifts, tasks)
+        return update_costs(costs, data, names, shifts, tasks), data_copy
     else:
         print("No solution found.")
+
+
+def get_cmap(n, name='hsv'):
+    '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct 
+    RGB color; the keyword argument name must be a standard mpl colormap name.'''
+    return plt.colormaps.get_cmap(name, n)
+
+
+def visualise(data,names, shifts,tasks):
+
+    # Declaring a figure "gnt"
+    fig, gnt = plt.subplots()
+
+    # Setting Y-axis limits
+    gnt.set_ylim(0, len(names))
+
+    # Setting X-axis limits
+    gnt.set_xlim(0, len(shifts))
+
+    # Setting labels for x-axis and y-axis
+    gnt.set_xlabel('shifts')
+    gnt.set_ylabel('Names')
+
+    """# Setting ticks on y-axis
+    gnt.set_yticks([15, 25, 35])
+    # Labelling tickes of y-axis
+    gnt.set_yticklabels(['1', '2', '3'])"""
+
+    # Setting graph attribute
+    gnt.grid(True)
+    cm = plt.get_cmap('gist_rainbow')
+
+    # Declaring a bar in schedule
+    i = 0
+    NUM_COLORS = len(names)
+    for name in names:
+        new_name = True
+        for shift in shifts:
+            for task in tasks:
+                if new_name == True and data[name,shift,task] > 0.5:
+                    gnt.broken_barh([(shift-1, 1)], (0+i, 4), facecolors = cm(1.*i/NUM_COLORS))
+        i += 1
+
+    plt.savefig("gantt1.png")
+
 
 
 def main(no_of_days, names, shifts, tasks, costs=None):
@@ -133,8 +184,10 @@ def main(no_of_days, names, shifts, tasks, costs=None):
     if costs == None:
         costs = initialise_costs(names,shifts,tasks)
     for day_number in range(no_of_days):
-        costs = calculate_one_set(costs, names, shifts, tasks, day_number)
+        costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
         print("new costs", costs)
+    visualise(data,names,shifts,tasks)
+
 
 if __name__ == "__main__":
     main(1,names,shifts,tasks)
