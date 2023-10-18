@@ -1,6 +1,7 @@
 from ortools.linear_solver import pywraplp
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":20,"Ahi":10}):
@@ -157,7 +158,9 @@ def visualise(data,names, shifts,tasks):
 
     
     # Labelling tickes of y-axis
-    gnt.set_yticklabels(names)
+    yticks = np.linspace(0.5,len(names)-0.5,len(names))
+    gnt.set_yticks(yticks,labels=names,minor=True)
+    
 
     # Setting graph attribute
     gnt.grid(True)
