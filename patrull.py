@@ -135,10 +135,8 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
         print("No solution found.")
 
 
-def get_cmap(n, name='hsv'):
-    '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct 
-    RGB color; the keyword argument name must be a standard mpl colormap name.'''
-    return plt.colormaps.get_cmap(name, n)
+def get_colour(task):
+    
 
 
 def visualise(data,names, shifts,tasks):
@@ -173,13 +171,11 @@ def visualise(data,names, shifts,tasks):
         slots = []
         for shift in shifts:
             for task in tasks:
-                if not slots:
-                    colour = cm(1.*i/NUM_COLORS)
                 if data[name,shift,task] > 0.5:
-                    slots.append((shift-1, 1))
+                    slots.append((shift-1, 1),task)
         
         if slots:
-            gnt.broken_barh(slots, (i, 1), facecolors = colour)
+            gnt.broken_barh(slots[0], (i, 1), facecolors = get_colour(task))
         i += 1
     plt.savefig("gantt1.png")
 
