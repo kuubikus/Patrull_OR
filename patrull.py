@@ -49,7 +49,7 @@ def initialise_costs(names,shifts,tasks):
         for shift in shifts:
             for task in tasks:
                 if (shift,task) not in tasks_assigned and shift not in shifts_assigned and soldier_slots < N and last_task != task:
-                    costs[name,shift,task] = 10
+                    costs[name,shift,task] = -10
                     tasks_assigned.append((shift,task))
                     shifts_assigned.append(shift)
                     soldier_slots += 1
@@ -178,9 +178,7 @@ def visualise(data,names, shifts,tasks):
         if slots:
             gnt.broken_barh(slots, (i, 1), facecolors = colour)
         i += 1
-
     plt.savefig("gantt1.png")
-
 
 
 def main(no_of_days, names, shifts, tasks, costs=None):
