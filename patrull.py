@@ -155,10 +155,9 @@ def visualise(data,names, shifts,tasks):
     gnt.set_xlabel('shifts')
     gnt.set_ylabel('Names')
 
-    """# Setting ticks on y-axis
-    gnt.set_yticks([15, 25, 35])
+    
     # Labelling tickes of y-axis
-    gnt.set_yticklabels(['1', '2', '3'])"""
+    gnt.set_yticklabels(names)
 
     # Setting graph attribute
     gnt.grid(True)
@@ -168,11 +167,17 @@ def visualise(data,names, shifts,tasks):
     i = 0
     NUM_COLORS = len(names)
     for name in names:
-        new_name = True
+        slots = []
         for shift in shifts:
             for task in tasks:
-                if new_name == True and data[name,shift,task] > 0.5:
-                    gnt.broken_barh([(shift-1, 1)], (0+i, 4), facecolors = cm(1.*i/NUM_COLORS))
+                if not slots:
+                    colour = cm(1.*i/NUM_COLORS)
+                if data[name,shift,task] > 0.5:
+                    
+                    slots.append((shift-1, 1))
+        
+        if slots:
+            gnt.broken_barh(slots, (i, 1), facecolors = colour)
         i += 1
 
     plt.savefig("gantt1.png")
