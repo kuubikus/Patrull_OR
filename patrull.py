@@ -161,7 +161,7 @@ def visualise(data,names, shifts,tasks):
 
     # Setting graph attribute
     gnt.grid(True)
-    cm = plt.get_cmap('gist_rainbow')
+    cm = plt.get_cmap('Accent')
 
     # Declaring a bar in schedule
     i = 0
@@ -173,7 +173,6 @@ def visualise(data,names, shifts,tasks):
                 if not slots:
                     colour = cm(1.*i/NUM_COLORS)
                 if data[name,shift,task] > 0.5:
-                    
                     slots.append((shift-1, 1))
         
         if slots:
