@@ -2,6 +2,7 @@ from ortools.linear_solver import pywraplp
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib as mpl
 
 
 def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":20,"Ahi":10}):
@@ -135,8 +136,17 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
         print("No solution found.")
 
 
-def get_colour(task):
-    
+def get_colour(task, tasks, cmap_name='Accent'):
+    cm = plt.get_cmap(cmap_name)
+    i = tasks.index(task)
+    return cm(1.*i/len(tasks))
+
+
+def get_patches(tasks):
+    patches = []
+    for task in tasks:
+        patches.append(mpl.patches.Patch(color=get_colour(task,tasks)))
+    return patches
 
 
 def visualise(data,names, shifts,tasks):
@@ -166,17 +176,23 @@ def visualise(data,names, shifts,tasks):
 
     # Declaring a bar in schedule
     i = 0
-    NUM_COLORS = len(names)
+    
     for name in names:
         slots = []
+        colours = []
         for shift in shifts:
             for task in tasks:
                 if data[name,shift,task] > 0.5:
-                    slots.append((shift-1, 1),task)
-        
+                    slots.append((shift-1, 1))
+                    colours.append(get_colour(task,tasks))
         if slots:
-            gnt.broken_barh(slots[0], (i, 1), facecolors = get_colour(task))
+            gnt.broken_barh(slots, (i, 1), facecolors = colours)
         i += 1
+
+    # legend
+    patches = get_patches(tasks)
+    gnt.legend(handles=patches, labels=tasks, fontsize=11)
+
     plt.savefig("gantt1.png")
 
 
