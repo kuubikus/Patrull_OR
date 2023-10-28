@@ -127,7 +127,15 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
     # Each soldier is assigned to at most 1 task at a given shift.
     for name in names:
         for shift in shifts:
-            solver.Add(solver.Sum([data[name, shift, task] for task in tasks]) <= 1)    
+            solver.Add(solver.Sum([data[name, shift, task] for task in tasks]) <= 1)   
+
+    # no soldier does more than total_tasks/no_of_soldiers tasks during one night
+    for name in names:
+        S = 0
+        for shift in shifts:
+            S += solver.Sum([data[name, shift, task] for task in tasks])
+        solver.Add(S <= len(shifts)*len(tasks)/len(names)+1)
+
     """
     for i in range(number_of_soldiers):
         res = 0
