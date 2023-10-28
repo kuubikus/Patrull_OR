@@ -134,7 +134,7 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
         S = 0
         for shift in shifts:
             S += solver.Sum([data[name, shift, task] for task in tasks])
-        solver.Add(S <= len(shifts)*len(tasks)/len(names)+1)
+        solver.Add(S <= round(len(shifts)*len(tasks)/len(names)))
 
     """
     for i in range(number_of_soldiers):
@@ -239,9 +239,10 @@ def main(no_of_days, names, shifts, tasks, costs=None):
         costs = initialise_costs(names,shifts,tasks)
     for day_number in range(no_of_days):
         costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
-        print("new costs", costs)
+        # print("new costs", costs)
         visualise(data,names,shifts,tasks, day_number)
 
 
 if __name__ == "__main__":
     main(5,names,shifts,tasks)
+
