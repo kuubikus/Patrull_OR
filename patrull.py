@@ -9,26 +9,55 @@ def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:1
     return cost_of_shifts[shift] + cost_of_tasks[task]
 
 
-def new_cost(data, soldier,shift,tasks):
+def neighbouring_shifts(shift,shifts):
+    # define left end
+    left_end = 1
+    if shift - 1 >= 1:
+        left_end = shift - 1
+    if shift - 2 >= 1:
+        left_end = shift - 2
+    # same for right end
+    right_end = len(shifts)
+    if shift + 1 <= len(shifts):
+        right_end = shift + 1
+    if shift + 2 <= len(shifts):
+        right_end = shift + 2
+    return list(range(left_end,right_end+1))
+
+
+def new_cost(data, soldier,shift,tasks,shifts, added_cost={}):
     """
     For a given soldier at a given shift returns the new costs.
-    """
-    added_cost = {}
+    """ 
     for task in tasks:
         # check if completed task k
         if data[soldier,shift,task].solution_value() == 1:
-            added_cost[task] = evaluate(shift,task)
-        if data[soldier,shift,task].solution_value() == 0:
-            added_cost[task] = 0
+            # main task
+            added_cost[(shift,task)] = evaluate(shift,task) 
+            # add points to other tasks and neighbouring shifts as well with a smaller impact
+            adjacent_shifts = neighbouring_shifts(shift,shifts)
+            print("adjacent_shifts", adjacent_shifts)
+            for task2 in tasks:
+                for shift2 in adjacent_shifts:
+                    # not the same task at the same same shift
+                    if task2 != task and shift2 != shift:
+                        if (shift2,task2) not in added_cost.keys():
+                            added_cost[(shift2,task2)] = 1/3*evaluate(shift2,task2) 
+                        else:
+                            added_cost[(shift2,task2)] += 1/3*evaluate(shift2,task2)
+
+        if (shift,task) not in added_cost.keys():
+            added_cost[(shift,task)] = 0
     return added_cost
     
 
 def update_costs(costs, data, names, shifts, tasks):
     for name in names:
+        added_cost = {}
         for shift in shifts:
-            added_cost = new_cost(data,name,shift,tasks)
+            added_cost = new_cost(data,name,shift,tasks,shifts,added_cost)
             for task in tasks:
-                costs[name,shift,task] += added_cost[task]
+                costs[name,shift,task] += added_cost[(shift,task)]
     return costs
 
 
@@ -51,7 +80,7 @@ def initialise_costs(names,shifts,tasks):
         for shift in shifts:
             for task in tasks:
                 if (shift,task) not in tasks_assigned and shift not in shifts_assigned and soldier_slots < N and last_task != task:
-                    costs[name,shift,task] = -10
+                    costs[name,shift,task] = -evaluate(shift,task)
                     tasks_assigned.append((shift,task))
                     shifts_assigned.append(shift)
                     soldier_slots += 1
@@ -149,7 +178,7 @@ def get_patches(tasks):
     return patches
 
 
-def visualise(data,names, shifts,tasks):
+def visualise(data,names, shifts,tasks, day):
 
     # Declaring a figure "gnt"
     fig, gnt = plt.subplots()
@@ -193,7 +222,7 @@ def visualise(data,names, shifts,tasks):
     patches = get_patches(tasks)
     gnt.legend(handles=patches, labels=tasks, fontsize=11)
 
-    plt.savefig("gantt1.png")
+    plt.savefig("gantt_on_day_{}.png".format(day))
 
 
 def main(no_of_days, names, shifts, tasks, costs=None):
@@ -203,8 +232,8 @@ def main(no_of_days, names, shifts, tasks, costs=None):
     for day_number in range(no_of_days):
         costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
         print("new costs", costs)
-    visualise(data,names,shifts,tasks)
+        visualise(data,names,shifts,tasks, day_number)
 
 
 if __name__ == "__main__":
-    main(1,names,shifts,tasks)
+    main(5,names,shifts,tasks)
