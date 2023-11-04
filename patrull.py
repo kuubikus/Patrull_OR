@@ -15,7 +15,7 @@ file_handler.setFormatter(formatter)
 log.addHandler(file_handler)
 
 
-def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":20,"Ahi":10}):
+def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":16,"Ahi":10}):
     return cost_of_shifts[shift] + cost_of_tasks[task]
 
 
@@ -50,7 +50,7 @@ def new_cost(data, soldier,shift,tasks,shifts, added_cost={}):
             for task2 in tasks:
                 for shift2 in adjacent_shifts:
                     # not the same task at the same same shift
-                    if task2 != task and shift2 != shift:
+                    if task2 != task or shift2 != shift:
                         if (shift2,task2) not in added_cost.keys():
                             added_cost[(shift2,task2)] = 1/3*evaluate(shift2,task2) 
                         else:
@@ -93,16 +93,20 @@ def initialise_costs(names,shifts,tasks):
                     tasks_assigned.append((shift,task))
                     shifts_assigned.append(shift)
                     soldier_slots += 1
+                    adjacent_shifts = neighbouring_shifts(shift,shifts)
+                    for task2 in tasks:
+                        for shift2 in adjacent_shifts:
+                            # not the same task at the same same shift
+                            if task2 != task or shift2 != shift:
+                                if (shift2,task2) not in costs.keys():
+                                    costs[(shift2,task2)] = 1/3*evaluate(shift2,task2) 
+                                else:
+                                    costs[(shift2,task2)] += 1/3*evaluate(shift2,task2)
                     last_task = task
                 else:
                     costs[name,shift,task] = 0
 
     return costs
-
-
-names = ["A","B","C","D","E","F","G"]
-shifts = [1,2,3,4,5,6]
-tasks = ["Patrull", "Post"]
 
 """
 cost = initialise_costs(names,shifts,tasks)
@@ -250,11 +254,16 @@ def main(no_of_days, names, shifts, tasks, costs=None):
     # initialise costs for the first day if older costs not given
     if costs == None:
         costs = initialise_costs(names,shifts,tasks)
+        log.debug("Initial costs: {}".format(str(costs)))
     for day_number in range(no_of_days):
         costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
         log.debug("new costs {}\n".format(str(costs)))
         visualise(data,names,shifts,tasks, day_number)
 
+
+names = ["A","B","C","D","E","F","G"]
+shifts = [1,2,3,4,5,6]
+tasks = ["Patrull", "Post"]
 
 if __name__ == "__main__":
     main(5,names,shifts,tasks)
