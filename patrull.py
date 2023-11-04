@@ -15,24 +15,19 @@ file_handler.setFormatter(formatter)
 log.addHandler(file_handler)
 
 
-def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":16,"Ahi":10}):
+def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":15,"Ahi":10}):
     return cost_of_shifts[shift] + cost_of_tasks[task]
 
 
-def neighbouring_shifts(shift,shifts):
-    # define left end
-    left_end = 1
-    if shift - 1 >= 1:
-        left_end = shift - 1
-    if shift - 2 >= 1:
-        left_end = shift - 2
-    # same for right end
-    right_end = len(shifts)
-    if shift + 1 <= len(shifts):
-        right_end = shift + 1
-    if shift + 2 <= len(shifts):
-        right_end = shift + 2
-    return list(range(left_end,right_end+1))
+def dist_parameters(OG_shift,shifts):
+    """
+    Returns a list of distance parameters for a given reference shift.
+    """
+    l = len(shifts)
+    params = {}
+    for shift in shifts:
+        params[shift] = (1 - abs(OG_shift-shift)/l)**2
+    return params
 
 
 def new_cost(data, soldier,shift,tasks,shifts, added_cost={}):
@@ -42,19 +37,15 @@ def new_cost(data, soldier,shift,tasks,shifts, added_cost={}):
     for task in tasks:
         # check if completed task k
         if data[soldier,shift,task].solution_value() == 1:
-            # main task
-            added_cost[(shift,task)] = evaluate(shift,task) 
-            # add points to other tasks and neighbouring shifts as well with a smaller impact
-            adjacent_shifts = neighbouring_shifts(shift,shifts)
-            log.debug("adjacent_shifts {}".format(str(adjacent_shifts)))
+            params = dist_parameters(shift,shifts)
             for task2 in tasks:
-                for shift2 in adjacent_shifts:
-                    # not the same task at the same same shift
-                    if task2 != task or shift2 != shift:
-                        if (shift2,task2) not in added_cost.keys():
-                            added_cost[(shift2,task2)] = 1/3*evaluate(shift2,task2) 
-                        else:
-                            added_cost[(shift2,task2)] += 1/3*evaluate(shift2,task2)
+                for shift2 in shifts:
+                    param = params[shift2]
+                    if (shift2,task2) not in added_cost.keys():
+                        added_cost[(shift2,task2)] = param*evaluate(shift2,task2) 
+                    else:
+                        added_cost[(shift2,task2)] += param*evaluate(shift2,task2)
+        
 
         if (shift,task) not in added_cost.keys():
             added_cost[(shift,task)] = 0
@@ -93,15 +84,14 @@ def initialise_costs(names,shifts,tasks):
                     tasks_assigned.append((shift,task))
                     shifts_assigned.append(shift)
                     soldier_slots += 1
-                    adjacent_shifts = neighbouring_shifts(shift,shifts)
+                    params = dist_parameters(shift,shifts)
                     for task2 in tasks:
-                        for shift2 in adjacent_shifts:
-                            # not the same task at the same same shift
-                            if task2 != task or shift2 != shift:
-                                if (shift2,task2) not in costs.keys():
-                                    costs[(shift2,task2)] = 1/3*evaluate(shift2,task2) 
-                                else:
-                                    costs[(shift2,task2)] += 1/3*evaluate(shift2,task2)
+                        for shift2 in shifts:
+                            param = params[shift2]
+                            if (shift2,task2) not in costs.keys():
+                                costs[(shift2,task2)] = param*evaluate(shift2,task2) 
+                            else:
+                                costs[(shift2,task2)] += param*evaluate(shift2,task2)
                     last_task = task
                 else:
                     costs[name,shift,task] = 0
