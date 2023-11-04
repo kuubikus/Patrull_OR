@@ -3,6 +3,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
+import logging
+
+# set up logger
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+# add handler and formatting
+file_handler = logging.FileHandler('patrull.log')
+formatter = logging.Formatter('[%(asctime)s] %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+log.addHandler(file_handler)
 
 
 def evaluate(shift, task, cost_of_shifts={1:10,2:10,3:20,4:20,5:30,6:30,7:30,8:10}, cost_of_tasks={"Patrull":20,"Post":20,"Ahi":10}):
@@ -36,7 +46,7 @@ def new_cost(data, soldier,shift,tasks,shifts, added_cost={}):
             added_cost[(shift,task)] = evaluate(shift,task) 
             # add points to other tasks and neighbouring shifts as well with a smaller impact
             adjacent_shifts = neighbouring_shifts(shift,shifts)
-            print("adjacent_shifts", adjacent_shifts)
+            log.debug("adjacent_shifts {}".format(str(adjacent_shifts)))
             for task2 in tasks:
                 for shift2 in adjacent_shifts:
                     # not the same task at the same same shift
@@ -71,7 +81,6 @@ def initialise_costs(names,shifts,tasks):
     """
     costs = {}
     N = len(shifts)*len(tasks)/len(names)
-    print("N",N)
     tasks_assigned = []
     for name in names:
         soldier_slots = 0
@@ -159,6 +168,8 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
     # Print solution.
     if status == pywraplp.Solver.OPTIMAL or status == pywraplp.Solver.FEASIBLE:
         print(f"Total cost = {solver.Objective().Value()}\n")
+        log.info("New day \n")
+        log.info(f"Total cost = {solver.Objective().Value()}")
         data_copy = {}
         for name in names:
             for shift in shifts:
@@ -167,10 +178,12 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
                     data_copy[name,shift,task] = data[name,shift,task].solution_value()
                     if data[name,shift,task].solution_value() > 0.5:
                         print(f"Soldier {name} assigned during shift {shift} to task {task}." + f" Cost: {costs[name,shift,task]}")
+                        log.info(f"Soldier {name} assigned during shift {shift} to task {task}." + f" Cost: {costs[name,shift,task]}")
         # calculate new costs
         return update_costs(costs, data, names, shifts, tasks), data_copy
     else:
         print("No solution found.")
+        log.warning("No solution found.")
 
 
 def get_colour(task, tasks, cmap_name='Accent'):
@@ -239,7 +252,7 @@ def main(no_of_days, names, shifts, tasks, costs=None):
         costs = initialise_costs(names,shifts,tasks)
     for day_number in range(no_of_days):
         costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
-        # print("new costs", costs)
+        log.debug("new costs {}\n".format(str(costs)))
         visualise(data,names,shifts,tasks, day_number)
 
 

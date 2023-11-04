@@ -1,0 +1,145 @@
+[2023-11-04 11:25:59,067] INFO - New day 
+
+[2023-11-04 11:25:59,067] INFO - Total cost = -480.0
+[2023-11-04 11:25:59,067] INFO - Soldier A assigned during shift 1 to task Patrull. Cost: -30
+[2023-11-04 11:25:59,067] INFO - Soldier A assigned during shift 2 to task Post. Cost: -30
+[2023-11-04 11:25:59,067] INFO - Soldier B assigned during shift 1 to task Post. Cost: -30
+[2023-11-04 11:25:59,067] INFO - Soldier B assigned during shift 2 to task Patrull. Cost: -30
+[2023-11-04 11:25:59,068] INFO - Soldier C assigned during shift 3 to task Patrull. Cost: -40
+[2023-11-04 11:25:59,068] INFO - Soldier C assigned during shift 4 to task Post. Cost: -40
+[2023-11-04 11:25:59,068] INFO - Soldier D assigned during shift 3 to task Post. Cost: -40
+[2023-11-04 11:25:59,068] INFO - Soldier D assigned during shift 4 to task Patrull. Cost: -40
+[2023-11-04 11:25:59,068] INFO - Soldier E assigned during shift 5 to task Patrull. Cost: -50
+[2023-11-04 11:25:59,068] INFO - Soldier E assigned during shift 6 to task Post. Cost: -50
+[2023-11-04 11:25:59,068] INFO - Soldier F assigned during shift 5 to task Post. Cost: -50
+[2023-11-04 11:25:59,069] INFO - Soldier F assigned during shift 6 to task Patrull. Cost: -50
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,069] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,071] DEBUG - new costs {('A', 1, 'Patrull'): 0, ('A', 1, 'Post'): 0, ('A', 2, 'Patrull'): 0, ('A', 2, 'Post'): 0, ('A', 3, 'Patrull'): 13.333333333333332, ('A', 3, 'Post'): 13.333333333333332, ('A', 4, 'Patrull'): 13.333333333333332, ('A', 4, 'Post'): 0, ('A', 5, 'Patrull'): 0, ('A', 5, 'Post'): 0, ('A', 6, 'Patrull'): 0, ('A', 6, 'Post'): 0, ('B', 1, 'Patrull'): 0, ('B', 1, 'Post'): 0, ('B', 2, 'Patrull'): 0, ('B', 2, 'Post'): 0, ('B', 3, 'Patrull'): 13.333333333333332, ('B', 3, 'Post'): 13.333333333333332, ('B', 4, 'Patrull'): 0, ('B', 4, 'Post'): 13.333333333333332, ('B', 5, 'Patrull'): 0, ('B', 5, 'Post'): 0, ('B', 6, 'Patrull'): 0, ('B', 6, 'Post'): 0, ('C', 1, 'Patrull'): 0, ('C', 1, 'Post'): 0, ('C', 2, 'Patrull'): 0, ('C', 2, 'Post'): 0, ('C', 3, 'Patrull'): 0, ('C', 3, 'Post'): 0, ('C', 4, 'Patrull'): 0, ('C', 4, 'Post'): 0, ('C', 5, 'Patrull'): 16.666666666666664, ('C', 5, 'Post'): 16.666666666666664, ('C', 6, 'Patrull'): 16.666666666666664, ('C', 6, 'Post'): 0, ('D', 1, 'Patrull'): 0, ('D', 1, 'Post'): 0, ('D', 2, 'Patrull'): 0, ('D', 2, 'Post'): 0, ('D', 3, 'Patrull'): 0, ('D', 3, 'Post'): 0, ('D', 4, 'Patrull'): 0, ('D', 4, 'Post'): 0, ('D', 5, 'Patrull'): 16.666666666666664, ('D', 5, 'Post'): 16.666666666666664, ('D', 6, 'Patrull'): 0, ('D', 6, 'Post'): 16.666666666666664, ('E', 1, 'Patrull'): 0, ('E', 1, 'Post'): 0, ('E', 2, 'Patrull'): 0, ('E', 2, 'Post'): 0, ('E', 3, 'Patrull'): 0, ('E', 3, 'Post'): 0, ('E', 4, 'Patrull'): 0, ('E', 4, 'Post'): 0, ('E', 5, 'Patrull'): 0, ('E', 5, 'Post'): 0, ('E', 6, 'Patrull'): 0, ('E', 6, 'Post'): 0, ('F', 1, 'Patrull'): 0, ('F', 1, 'Post'): 0, ('F', 2, 'Patrull'): 0, ('F', 2, 'Post'): 0, ('F', 3, 'Patrull'): 0, ('F', 3, 'Post'): 0, ('F', 4, 'Patrull'): 0, ('F', 4, 'Post'): 0, ('F', 5, 'Patrull'): 0, ('F', 5, 'Post'): 0, ('F', 6, 'Patrull'): 0, ('F', 6, 'Post'): 0, ('G', 1, 'Patrull'): 0, ('G', 1, 'Post'): 0, ('G', 2, 'Patrull'): 0, ('G', 2, 'Post'): 0, ('G', 3, 'Patrull'): 0, ('G', 3, 'Post'): 0, ('G', 4, 'Patrull'): 0, ('G', 4, 'Post'): 0, ('G', 5, 'Patrull'): 0, ('G', 5, 'Post'): 0, ('G', 6, 'Patrull'): 0, ('G', 6, 'Post'): 0}
+
+[2023-11-04 11:25:59,207] INFO - New day 
+
+[2023-11-04 11:25:59,207] INFO - Total cost = 0.0
+[2023-11-04 11:25:59,207] INFO - Soldier A assigned during shift 1 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,207] INFO - Soldier A assigned during shift 2 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier B assigned during shift 1 to task Post. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier B assigned during shift 2 to task Post. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier C assigned during shift 3 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier C assigned during shift 4 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier D assigned during shift 3 to task Post. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier D assigned during shift 4 to task Post. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier E assigned during shift 5 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,208] INFO - Soldier E assigned during shift 6 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,209] INFO - Soldier F assigned during shift 5 to task Post. Cost: 0
+[2023-11-04 11:25:59,209] INFO - Soldier F assigned during shift 6 to task Post. Cost: 0
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,209] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,211] DEBUG - new costs {('A', 1, 'Patrull'): 30, ('A', 1, 'Post'): 0, ('A', 2, 'Patrull'): 30, ('A', 2, 'Post'): 10.0, ('A', 3, 'Patrull'): 13.333333333333332, ('A', 3, 'Post'): 40.0, ('A', 4, 'Patrull'): 13.333333333333332, ('A', 4, 'Post'): 13.333333333333332, ('A', 5, 'Patrull'): 0, ('A', 5, 'Post'): 0, ('A', 6, 'Patrull'): 0, ('A', 6, 'Post'): 0, ('B', 1, 'Patrull'): 0, ('B', 1, 'Post'): 30, ('B', 2, 'Patrull'): 10.0, ('B', 2, 'Post'): 30, ('B', 3, 'Patrull'): 40.0, ('B', 3, 'Post'): 13.333333333333332, ('B', 4, 'Patrull'): 13.333333333333332, ('B', 4, 'Post'): 13.333333333333332, ('B', 5, 'Patrull'): 0, ('B', 5, 'Post'): 0, ('B', 6, 'Patrull'): 0, ('B', 6, 'Post'): 0, ('C', 1, 'Patrull'): 0, ('C', 1, 'Post'): 0, ('C', 2, 'Patrull'): 0, ('C', 2, 'Post'): 0, ('C', 3, 'Patrull'): 40, ('C', 3, 'Post'): 0, ('C', 4, 'Patrull'): 40, ('C', 4, 'Post'): 13.333333333333332, ('C', 5, 'Patrull'): 16.666666666666664, ('C', 5, 'Post'): 49.99999999999999, ('C', 6, 'Patrull'): 16.666666666666664, ('C', 6, 'Post'): 16.666666666666664, ('D', 1, 'Patrull'): 0, ('D', 1, 'Post'): 0, ('D', 2, 'Patrull'): 0, ('D', 2, 'Post'): 0, ('D', 3, 'Patrull'): 0, ('D', 3, 'Post'): 40, ('D', 4, 'Patrull'): 13.333333333333332, ('D', 4, 'Post'): 40, ('D', 5, 'Patrull'): 49.99999999999999, ('D', 5, 'Post'): 16.666666666666664, ('D', 6, 'Patrull'): 16.666666666666664, ('D', 6, 'Post'): 16.666666666666664, ('E', 1, 'Patrull'): 0, ('E', 1, 'Post'): 0, ('E', 2, 'Patrull'): 0, ('E', 2, 'Post'): 0, ('E', 3, 'Patrull'): 0, ('E', 3, 'Post'): 0, ('E', 4, 'Patrull'): 0, ('E', 4, 'Post'): 0, ('E', 5, 'Patrull'): 50, ('E', 5, 'Post'): 0, ('E', 6, 'Patrull'): 50, ('E', 6, 'Post'): 16.666666666666664, ('F', 1, 'Patrull'): 0, ('F', 1, 'Post'): 0, ('F', 2, 'Patrull'): 0, ('F', 2, 'Post'): 0, ('F', 3, 'Patrull'): 0, ('F', 3, 'Post'): 0, ('F', 4, 'Patrull'): 0, ('F', 4, 'Post'): 0, ('F', 5, 'Patrull'): 0, ('F', 5, 'Post'): 50, ('F', 6, 'Patrull'): 16.666666666666664, ('F', 6, 'Post'): 50, ('G', 1, 'Patrull'): 0, ('G', 1, 'Post'): 0, ('G', 2, 'Patrull'): 0, ('G', 2, 'Post'): 0, ('G', 3, 'Patrull'): 0, ('G', 3, 'Post'): 0, ('G', 4, 'Patrull'): 0, ('G', 4, 'Post'): 0, ('G', 5, 'Patrull'): 0, ('G', 5, 'Post'): 0, ('G', 6, 'Patrull'): 0, ('G', 6, 'Post'): 0}
+
+[2023-11-04 11:25:59,305] INFO - New day 
+
+[2023-11-04 11:25:59,305] INFO - Total cost = 0.0
+[2023-11-04 11:25:59,305] INFO - Soldier A assigned during shift 5 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,305] INFO - Soldier A assigned during shift 6 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,305] INFO - Soldier B assigned during shift 1 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,305] INFO - Soldier B assigned during shift 5 to task Post. Cost: 0
+[2023-11-04 11:25:59,305] INFO - Soldier C assigned during shift 1 to task Post. Cost: 0
+[2023-11-04 11:25:59,306] INFO - Soldier C assigned during shift 2 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,306] INFO - Soldier D assigned during shift 2 to task Post. Cost: 0
+[2023-11-04 11:25:59,306] INFO - Soldier D assigned during shift 3 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,306] INFO - Soldier E assigned during shift 3 to task Post. Cost: 0
+[2023-11-04 11:25:59,306] INFO - Soldier E assigned during shift 4 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,306] INFO - Soldier F assigned during shift 4 to task Post. Cost: 0
+[2023-11-04 11:25:59,307] INFO - Soldier G assigned during shift 6 to task Post. Cost: 0
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,307] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,310] DEBUG - new costs {('A', 1, 'Patrull'): 30, ('A', 1, 'Post'): 0, ('A', 2, 'Patrull'): 30, ('A', 2, 'Post'): 10.0, ('A', 3, 'Patrull'): 13.333333333333332, ('A', 3, 'Post'): 40.0, ('A', 4, 'Patrull'): 13.333333333333332, ('A', 4, 'Post'): 13.333333333333332, ('A', 5, 'Patrull'): 50, ('A', 5, 'Post'): 0, ('A', 6, 'Patrull'): 50, ('A', 6, 'Post'): 16.666666666666664, ('B', 1, 'Patrull'): 30, ('B', 1, 'Post'): 30, ('B', 2, 'Patrull'): 10.0, ('B', 2, 'Post'): 40.0, ('B', 3, 'Patrull'): 40.0, ('B', 3, 'Post'): 26.666666666666664, ('B', 4, 'Patrull'): 13.333333333333332, ('B', 4, 'Post'): 13.333333333333332, ('B', 5, 'Patrull'): 0, ('B', 5, 'Post'): 50, ('B', 6, 'Patrull'): 16.666666666666664, ('B', 6, 'Post'): 0, ('C', 1, 'Patrull'): 0, ('C', 1, 'Post'): 30, ('C', 2, 'Patrull'): 30, ('C', 2, 'Post'): 0, ('C', 3, 'Patrull'): 53.33333333333333, ('C', 3, 'Post'): 13.333333333333332, ('C', 4, 'Patrull'): 40, ('C', 4, 'Post'): 26.666666666666664, ('C', 5, 'Patrull'): 16.666666666666664, ('C', 5, 'Post'): 49.99999999999999, ('C', 6, 'Patrull'): 16.666666666666664, ('C', 6, 'Post'): 16.666666666666664, ('D', 1, 'Patrull'): 0, ('D', 1, 'Post'): 0, ('D', 2, 'Patrull'): 0, ('D', 2, 'Post'): 30, ('D', 3, 'Patrull'): 40, ('D', 3, 'Post'): 40, ('D', 4, 'Patrull'): 26.666666666666664, ('D', 4, 'Post'): 53.33333333333333, ('D', 5, 'Patrull'): 49.99999999999999, ('D', 5, 'Post'): 33.33333333333333, ('D', 6, 'Patrull'): 16.666666666666664, ('D', 6, 'Post'): 16.666666666666664, ('E', 1, 'Patrull'): 0, ('E', 1, 'Post'): 0, ('E', 2, 'Patrull'): 0, ('E', 2, 'Post'): 0, ('E', 3, 'Patrull'): 0, ('E', 3, 'Post'): 40, ('E', 4, 'Patrull'): 40, ('E', 4, 'Post'): 0, ('E', 5, 'Patrull'): 66.66666666666666, ('E', 5, 'Post'): 16.666666666666664, ('E', 6, 'Patrull'): 50, ('E', 6, 'Post'): 33.33333333333333, ('F', 1, 'Patrull'): 0, ('F', 1, 'Post'): 0, ('F', 2, 'Patrull'): 0, ('F', 2, 'Post'): 0, ('F', 3, 'Patrull'): 0, ('F', 3, 'Post'): 0, ('F', 4, 'Patrull'): 0, ('F', 4, 'Post'): 40, ('F', 5, 'Patrull'): 16.666666666666664, ('F', 5, 'Post'): 50, ('F', 6, 'Patrull'): 33.33333333333333, ('F', 6, 'Post'): 50, ('G', 1, 'Patrull'): 0, ('G', 1, 'Post'): 0, ('G', 2, 'Patrull'): 0, ('G', 2, 'Post'): 0, ('G', 3, 'Patrull'): 0, ('G', 3, 'Post'): 0, ('G', 4, 'Patrull'): 0, ('G', 4, 'Post'): 0, ('G', 5, 'Patrull'): 0, ('G', 5, 'Post'): 0, ('G', 6, 'Patrull'): 0, ('G', 6, 'Post'): 50}
+
+[2023-11-04 11:25:59,421] INFO - New day 
+
+[2023-11-04 11:25:59,422] INFO - Total cost = 0.0
+[2023-11-04 11:25:59,422] INFO - Soldier A assigned during shift 1 to task Post. Cost: 0
+[2023-11-04 11:25:59,422] INFO - Soldier A assigned during shift 5 to task Post. Cost: 0
+[2023-11-04 11:25:59,422] INFO - Soldier B assigned during shift 5 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,422] INFO - Soldier B assigned during shift 6 to task Post. Cost: 0
+[2023-11-04 11:25:59,422] INFO - Soldier C assigned during shift 1 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,422] INFO - Soldier C assigned during shift 2 to task Post. Cost: 0
+[2023-11-04 11:25:59,423] INFO - Soldier D assigned during shift 2 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,423] INFO - Soldier E assigned during shift 3 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,423] INFO - Soldier E assigned during shift 4 to task Post. Cost: 0
+[2023-11-04 11:25:59,423] INFO - Soldier F assigned during shift 3 to task Post. Cost: 0
+[2023-11-04 11:25:59,423] INFO - Soldier F assigned during shift 4 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,423] INFO - Soldier G assigned during shift 6 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,423] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,424] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,424] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,424] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,426] DEBUG - new costs {('A', 1, 'Patrull'): 30, ('A', 1, 'Post'): 30, ('A', 2, 'Patrull'): 40.0, ('A', 2, 'Post'): 10.0, ('A', 3, 'Patrull'): 26.666666666666664, ('A', 3, 'Post'): 40.0, ('A', 4, 'Patrull'): 13.333333333333332, ('A', 4, 'Post'): 13.333333333333332, ('A', 5, 'Patrull'): 50, ('A', 5, 'Post'): 50, ('A', 6, 'Patrull'): 66.66666666666666, ('A', 6, 'Post'): 16.666666666666664, ('B', 1, 'Patrull'): 30, ('B', 1, 'Post'): 30, ('B', 2, 'Patrull'): 10.0, ('B', 2, 'Post'): 40.0, ('B', 3, 'Patrull'): 40.0, ('B', 3, 'Post'): 26.666666666666664, ('B', 4, 'Patrull'): 13.333333333333332, ('B', 4, 'Post'): 13.333333333333332, ('B', 5, 'Patrull'): 50, ('B', 5, 'Post'): 50, ('B', 6, 'Patrull'): 16.666666666666664, ('B', 6, 'Post'): 50, ('C', 1, 'Patrull'): 30, ('C', 1, 'Post'): 30, ('C', 2, 'Patrull'): 30, ('C', 2, 'Post'): 30, ('C', 3, 'Patrull'): 66.66666666666666, ('C', 3, 'Post'): 26.666666666666664, ('C', 4, 'Patrull'): 53.33333333333333, ('C', 4, 'Post'): 26.666666666666664, ('C', 5, 'Patrull'): 16.666666666666664, ('C', 5, 'Post'): 49.99999999999999, ('C', 6, 'Patrull'): 16.666666666666664, ('C', 6, 'Post'): 16.666666666666664, ('D', 1, 'Patrull'): 0, ('D', 1, 'Post'): 0, ('D', 2, 'Patrull'): 30, ('D', 2, 'Post'): 30, ('D', 3, 'Patrull'): 40, ('D', 3, 'Post'): 53.33333333333333, ('D', 4, 'Patrull'): 26.666666666666664, ('D', 4, 'Post'): 66.66666666666666, ('D', 5, 'Patrull'): 49.99999999999999, ('D', 5, 'Post'): 33.33333333333333, ('D', 6, 'Patrull'): 16.666666666666664, ('D', 6, 'Post'): 16.666666666666664, ('E', 1, 'Patrull'): 0, ('E', 1, 'Post'): 0, ('E', 2, 'Patrull'): 0, ('E', 2, 'Post'): 0, ('E', 3, 'Patrull'): 40, ('E', 3, 'Post'): 40, ('E', 4, 'Patrull'): 40, ('E', 4, 'Post'): 40, ('E', 5, 'Patrull'): 83.33333333333331, ('E', 5, 'Post'): 33.33333333333333, ('E', 6, 'Patrull'): 66.66666666666666, ('E', 6, 'Post'): 33.33333333333333, ('F', 1, 'Patrull'): 0, ('F', 1, 'Post'): 0, ('F', 2, 'Patrull'): 0, ('F', 2, 'Post'): 0, ('F', 3, 'Patrull'): 0, ('F', 3, 'Post'): 40, ('F', 4, 'Patrull'): 40, ('F', 4, 'Post'): 40, ('F', 5, 'Patrull'): 33.33333333333333, ('F', 5, 'Post'): 66.66666666666666, ('F', 6, 'Patrull'): 33.33333333333333, ('F', 6, 'Post'): 66.66666666666666, ('G', 1, 'Patrull'): 0, ('G', 1, 'Post'): 0, ('G', 2, 'Patrull'): 0, ('G', 2, 'Post'): 0, ('G', 3, 'Patrull'): 0, ('G', 3, 'Post'): 0, ('G', 4, 'Patrull'): 0, ('G', 4, 'Post'): 0, ('G', 5, 'Patrull'): 0, ('G', 5, 'Post'): 0, ('G', 6, 'Patrull'): 50, ('G', 6, 'Post'): 50}
+
+[2023-11-04 11:25:59,519] INFO - New day 
+
+[2023-11-04 11:25:59,519] INFO - Total cost = 76.66666666666667
+[2023-11-04 11:25:59,519] INFO - Soldier A assigned during shift 4 to task Patrull. Cost: 13.333333333333332
+[2023-11-04 11:25:59,520] INFO - Soldier A assigned during shift 6 to task Post. Cost: 16.666666666666664
+[2023-11-04 11:25:59,520] INFO - Soldier B assigned during shift 4 to task Post. Cost: 13.333333333333332
+[2023-11-04 11:25:59,520] INFO - Soldier C assigned during shift 5 to task Patrull. Cost: 16.666666666666664
+[2023-11-04 11:25:59,520] INFO - Soldier D assigned during shift 1 to task Post. Cost: 0
+[2023-11-04 11:25:59,520] INFO - Soldier D assigned during shift 6 to task Patrull. Cost: 16.666666666666664
+[2023-11-04 11:25:59,520] INFO - Soldier E assigned during shift 1 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,520] INFO - Soldier E assigned during shift 2 to task Post. Cost: 0
+[2023-11-04 11:25:59,520] INFO - Soldier F assigned during shift 2 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,521] INFO - Soldier F assigned during shift 3 to task Patrull. Cost: 0
+[2023-11-04 11:25:59,521] INFO - Soldier G assigned during shift 3 to task Post. Cost: 0
+[2023-11-04 11:25:59,521] INFO - Soldier G assigned during shift 5 to task Post. Cost: 0
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [2, 3, 4, 5, 6]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [4, 5, 6]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [1, 2, 3]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [1, 2, 3, 4]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [1, 2, 3, 4, 5]
+[2023-11-04 11:25:59,521] DEBUG - adjacent_shifts [3, 4, 5, 6]
+[2023-11-04 11:25:59,523] DEBUG - new costs {('A', 1, 'Patrull'): 30, ('A', 1, 'Post'): 30, ('A', 2, 'Patrull'): 40.0, ('A', 2, 'Post'): 10.0, ('A', 3, 'Patrull'): 26.666666666666664, ('A', 3, 'Post'): 40.0, ('A', 4, 'Patrull'): 53.33333333333333, ('A', 4, 'Post'): 13.333333333333332, ('A', 5, 'Patrull'): 50, ('A', 5, 'Post'): 66.66666666666666, ('A', 6, 'Patrull'): 66.66666666666666, ('A', 6, 'Post'): 66.66666666666666, ('B', 1, 'Patrull'): 30, ('B', 1, 'Post'): 30, ('B', 2, 'Patrull'): 10.0, ('B', 2, 'Post'): 40.0, ('B', 3, 'Patrull'): 40.0, ('B', 3, 'Post'): 26.666666666666664, ('B', 4, 'Patrull'): 13.333333333333332, ('B', 4, 'Post'): 53.33333333333333, ('B', 5, 'Patrull'): 66.66666666666666, ('B', 5, 'Post'): 50, ('B', 6, 'Patrull'): 33.33333333333333, ('B', 6, 'Post'): 50, ('C', 1, 'Patrull'): 30, ('C', 1, 'Post'): 30, ('C', 2, 'Patrull'): 30, ('C', 2, 'Post'): 30, ('C', 3, 'Patrull'): 66.66666666666666, ('C', 3, 'Post'): 26.666666666666664, ('C', 4, 'Patrull'): 53.33333333333333, ('C', 4, 'Post'): 26.666666666666664, ('C', 5, 'Patrull'): 66.66666666666666, ('C', 5, 'Post'): 49.99999999999999, ('C', 6, 'Patrull'): 16.666666666666664, ('C', 6, 'Post'): 33.33333333333333, ('D', 1, 'Patrull'): 0, ('D', 1, 'Post'): 30, ('D', 2, 'Patrull'): 40.0, ('D', 2, 'Post'): 30, ('D', 3, 'Patrull'): 53.33333333333333, ('D', 3, 'Post'): 53.33333333333333, ('D', 4, 'Patrull'): 26.666666666666664, ('D', 4, 'Post'): 66.66666666666666, ('D', 5, 'Patrull'): 49.99999999999999, ('D', 5, 'Post'): 33.33333333333333, ('D', 6, 'Patrull'): 66.66666666666666, ('D', 6, 'Post'): 16.666666666666664, ('E', 1, 'Patrull'): 30, ('E', 1, 'Post'): 0, ('E', 2, 'Patrull'): 0, ('E', 2, 'Post'): 30, ('E', 3, 'Patrull'): 53.33333333333333, ('E', 3, 'Post'): 53.33333333333333, ('E', 4, 'Patrull'): 53.33333333333333, ('E', 4, 'Post'): 40, ('E', 5, 'Patrull'): 83.33333333333331, ('E', 5, 'Post'): 33.33333333333333, ('E', 6, 'Patrull'): 66.66666666666666, ('E', 6, 'Post'): 33.33333333333333, ('F', 1, 'Patrull'): 0, ('F', 1, 'Post'): 0, ('F', 2, 'Patrull'): 30, ('F', 2, 'Post'): 0, ('F', 3, 'Patrull'): 40, ('F', 3, 'Post'): 53.33333333333333, ('F', 4, 'Patrull'): 40, ('F', 4, 'Post'): 66.66666666666666, ('F', 5, 'Patrull'): 33.33333333333333, ('F', 5, 'Post'): 83.33333333333331, ('F', 6, 'Patrull'): 33.33333333333333, ('F', 6, 'Post'): 66.66666666666666, ('G', 1, 'Patrull'): 0, ('G', 1, 'Post'): 0, ('G', 2, 'Patrull'): 0, ('G', 2, 'Post'): 0, ('G', 3, 'Patrull'): 0, ('G', 3, 'Post'): 40, ('G', 4, 'Patrull'): 13.333333333333332, ('G', 4, 'Post'): 0, ('G', 5, 'Patrull'): 16.666666666666664, ('G', 5, 'Post'): 50, ('G', 6, 'Patrull'): 66.66666666666666, ('G', 6, 'Post'): 50}
+
