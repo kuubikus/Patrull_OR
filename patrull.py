@@ -256,15 +256,17 @@ def visualise(data,names, shifts,tasks, day):
 
     plt.savefig("gantt_on_day_{}.png".format(day))
 
-def write_to_file(data,named_shifts,name="mdr Mikk"):
-    with open("output.txt",'w') as f:
-        f.write("Graafik\n")
+def write_to_file(data,names,shifts,tasks,named_shifts,day,name="mdr Mikk"):
+    with open("output{}.txt".format(day),'w') as f:
+        f.write("Graafik päeval {}\n".format(day))
         f.write("Koostas: {}\n".format(name))
         f.write("Kuupäev: {}\n".format(date.today()))
         f.write("Name       Shift       Task\n")
-        for key in data.keys():
-            if data[key] > 0.5:
-                f.write("{}       {}       {}\n".format(key[0],named_shifts[key[1]-1],key[2]))
+        for shift in shifts:
+            for task in tasks:
+                for name in names:
+                    if data[name,shift,task] > 0.5:
+                        f.write("{}       {}       {}\n".format(name,named_shifts[shift-1],task))
     f.close()
 
 def main(no_of_days, names, shifts, tasks, time_shifts,costs=None):
@@ -275,8 +277,8 @@ def main(no_of_days, names, shifts, tasks, time_shifts,costs=None):
     for day_number in range(no_of_days):
         costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
         log.debug("new costs {}\n".format(str(costs)))
-        visualise(data,names,shifts,tasks, day_number)
-    write_to_file(data,time_shifts)
+        visualise(data,names,shifts,tasks,day_number)
+        write_to_file(data,names,shifts,tasks,time_shifts,day_number)
 
 
 names = ["A","B","C","D","E","F","G"]
@@ -285,5 +287,5 @@ shifts = list(range(1,len(time_shifts)+1))
 tasks = ["Patrull", "Post","Ahi"]
 
 if __name__ == "__main__":
-    main(1,names,shifts,tasks,time_shifts)
+    main(3,names,shifts,tasks,time_shifts)
 
