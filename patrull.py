@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
 import logging
+from datetime import date
+"""
+NOTE
+If no solution found then try adding +1 to constraint 3.
+"""
 
 # set up logger
 log = logging.getLogger(__name__)
@@ -26,7 +31,7 @@ def dist_parameters(OG_shift,shifts):
     l = len(shifts)
     params = {}
     for shift in shifts:
-        params[shift] = (1 - abs(OG_shift-shift)/l)**2
+        params[shift] = (1 - abs(OG_shift-shift)/l)**3
     return params
 
 
@@ -99,9 +104,9 @@ def initialise_costs(names,shifts,tasks):
                         for shift2 in shifts:
                             param = params[shift2]
                             if (shift2,task2) not in costs.keys():
-                                costs[(shift2,task2)] = param*evaluate(shift2,task2) 
+                                costs[name,shift2,task2] = param*evaluate(shift2,task2) 
                             else:
-                                costs[(shift2,task2)] += param*evaluate(shift2,task2)
+                                costs[name,shift2,task2] += param*evaluate(shift2,task2)
                     last_task = task
                 else:
                     costs[name,shift,task] = 0
@@ -132,24 +137,24 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
                 data[name, shift, task] = solver.IntVar(0, 1, "")
 
     # Constraints
-    # Each task is assigned to exactly one soldier
+    # 1. Each task is assigned to exactly one soldier
     for shift in shifts:
         for task in tasks:
             solver.Add(solver.Sum([data[name, shift, task] for name in names]) == 1)
 
-    # Each soldier is assigned to at most 1 task at a given shift.
+    # 2. Each soldier is assigned to at most 1 task at a given shift.
     for name in names:
         for shift in shifts:
             solver.Add(solver.Sum([data[name, shift, task] for task in tasks]) <= 1)   
 
-    # no soldier does more than total_tasks/no_of_soldiers tasks during one night
+    # 3. No soldier does more than total_tasks/no_of_soldiers tasks during one night
     for name in names:
         S = 0
         for shift in shifts:
             S += solver.Sum([data[name, shift, task] for task in tasks])
-        solver.Add(S <= round(len(shifts)*len(tasks)/len(names)))
+        solver.Add(S <= round(len(shifts)*len(tasks)/len(names))+1)
 
-    # ---TO DO--- the same task is not done twice in subjugate shifts 
+    # 4. The same task is not done twice in subjugate shifts 
     for name in names:
         for task in tasks:
             for shift in shifts:
@@ -251,8 +256,18 @@ def visualise(data,names, shifts,tasks, day):
 
     plt.savefig("gantt_on_day_{}.png".format(day))
 
+def write_to_file(data,named_shifts,name="mdr Mikk"):
+    with open("output.txt",'w') as f:
+        f.write("Graafik\n")
+        f.write("Koostas: {}\n".format(name))
+        f.write("Kuupäev: {}\n".format(date.today()))
+        f.write("Name       Shift       Task\n")
+        for key in data.keys():
+            if data[key] > 0.5:
+                f.write("{}       {}       {}\n".format(key[0],named_shifts[key[1]-1],key[2]))
+    f.close()
 
-def main(no_of_days, names, shifts, tasks, costs=None):
+def main(no_of_days, names, shifts, tasks, time_shifts,costs=None):
     # initialise costs for the first day if older costs not given
     if costs == None:
         costs = initialise_costs(names,shifts,tasks)
@@ -261,12 +276,14 @@ def main(no_of_days, names, shifts, tasks, costs=None):
         costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
         log.debug("new costs {}\n".format(str(costs)))
         visualise(data,names,shifts,tasks, day_number)
+    write_to_file(data,time_shifts)
 
 
 names = ["A","B","C","D","E","F","G"]
-shifts = [1,2,3,4,5,6]
-tasks = ["Patrull", "Post"]
+time_shifts = ["2200-2300","2300-0000","0000-0100","0100-0200","0200-0300","0300-0400","0400-0500","0500-0600"]
+shifts = list(range(1,len(time_shifts)+1))
+tasks = ["Patrull", "Post","Ahi"]
 
 if __name__ == "__main__":
-    main(5,names,shifts,tasks)
+    main(1,names,shifts,tasks,time_shifts)
 
