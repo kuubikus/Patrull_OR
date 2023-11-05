@@ -30,6 +30,16 @@ def dist_parameters(OG_shift,shifts):
     return params
 
 
+def get_adjacent(shift,N):
+    adjacents = []
+    if shift - 1 >= 1:
+        adjacents.append(shift -1)
+    if shift + 1 <= N:
+        adjacents.append(shift + 1)
+    adjacents.append(shift)
+    return adjacents
+
+
 def new_cost(data, soldier,shift,tasks,shifts, added_cost={}):
     """
     For a given soldier at a given shift returns the new costs.
@@ -139,14 +149,16 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
             S += solver.Sum([data[name, shift, task] for task in tasks])
         solver.Add(S <= round(len(shifts)*len(tasks)/len(names)))
 
-    """
-    for i in range(number_of_soldiers):
-        res = 0
-        for k in range(number_of_tasks):
-            
-            res += solver.Sum([x[i, j, k] for k in range(number_of_shifts)])
-        solver.Add(res <= 1)
-    """
+    # ---TO DO--- the same task is not done twice in subjugate shifts 
+    for name in names:
+        for task in tasks:
+            for shift in shifts:
+                adjacent = get_adjacent(shift,len(shifts))
+                S = 0
+                for task2 in tasks:
+                    if task2 == task:
+                        S += solver.Sum([data[name, shift, task] for shift in adjacent])
+                solver.Add(S<=1)
 
     # Objective
     objective_terms = []
