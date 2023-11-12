@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib as mpl
 import logging
 from datetime import date
+from copy import deepcopy
 """
 NOTE
 If no solution found then try adding +1 to constraint 3.
@@ -121,7 +122,7 @@ with open('result.txt', 'w+') as fp:
 """
     
 
-def calculate_one_set(costs, names, shifts, tasks, day_number):
+def calculate_one_set(costs, names, shifts, tasks, day_number,specifics={}):
     # Solver
     # Create the mip solver with the SCIP backend.
     solver = pywraplp.Solver.CreateSolver("SCIP")
@@ -137,10 +138,18 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
                 data[name, shift, task] = solver.IntVar(0, 1, "")
 
     # Constraints
-    # 1. Each task is assigned to exactly one soldier
-    for shift in shifts:
-        for task in tasks:
-            solver.Add(solver.Sum([data[name, shift, task] for name in names]) == 1)
+    # 1. Each task is assigned to exactly one soldier, except for some tasks that only need to be carried out at specifc shifts.
+    for task in tasks:
+        if task not in specifics.keys():
+            for shift in shifts:
+                solver.Add(solver.Sum([data[name, shift, task] for name in names]) == 1)
+        if task in specifics.keys():
+            opp = get_opposite(shifts,specifics[task])
+            for shift in opp:
+                # These are not assigned to anyone
+                solver.Add(solver.Sum([data[name, shift, task] for name in names]) == 0)
+            for shift in specifics[task]:
+                solver.Add(solver.Sum([data[name, shift, task] for name in names]) == 1)
 
     # 2. Each soldier is assigned to at most 1 task at a given shift.
     for name in names:
@@ -164,7 +173,7 @@ def calculate_one_set(costs, names, shifts, tasks, day_number):
                     if task2 == task:
                         S += solver.Sum([data[name, shift, task] for shift in adjacent])
                 solver.Add(S<=1)
-
+                
     # Objective
     objective_terms = []
     for name in names:
@@ -208,6 +217,14 @@ def get_patches(tasks):
     for task in tasks:
         patches.append(mpl.patches.Patch(color=get_colour(task,tasks)))
     return patches
+
+
+def get_opposite(shifts,req_shifts):
+    new_shifts = deepcopy(shifts)
+    for shift in req_shifts:
+        log.debug(f"Shift {shift} not here?")
+        new_shifts.remove(shift)
+    return new_shifts
 
 
 def visualise(data,names, shifts,tasks, day):
@@ -269,23 +286,35 @@ def write_to_file(data,names,shifts,tasks,named_shifts,day,name="mdr Mikk"):
                         f.write("{}       {}       {}\n".format(name,named_shifts[shift-1],task))
     f.close()
 
-def main(no_of_days, names, shifts, tasks, time_shifts,costs=None):
+def main(no_of_days, names, shifts, tasks, time_shifts,costs=None,specifics={}):
     # initialise costs for the first day if older costs not given
     if costs == None:
         costs = initialise_costs(names,shifts,tasks)
         log.debug("Initial costs: {}".format(str(costs)))
     for day_number in range(no_of_days):
-        costs, data = calculate_one_set(costs, names, shifts, tasks, day_number)
+        costs, data = calculate_one_set(costs, names, shifts, tasks, day_number,specifics)
         log.debug("new costs {}\n".format(str(costs)))
         visualise(data,names,shifts,tasks,day_number)
         write_to_file(data,names,shifts,tasks,time_shifts,day_number)
 
+def create_specific_shifts(shifts,task,specifics={}):
+    """
+    Use this if some tasks only need to be performed at certain shifts.
+    Input: The shifts and the task to which the constraitns apply.
+    Output: a dict with the task as key and the shifts in a list.
+    """
+    specifics[task] = []
+    for shift in shifts:
+        specifics[task].append(shift)
+    return specifics
+        
 
 names = ["A","B","C","D","E","F","G"]
 time_shifts = ["2200-2300","2300-0000","0000-0100","0100-0200","0200-0300","0300-0400","0400-0500","0500-0600"]
 shifts = list(range(1,len(time_shifts)+1))
-tasks = ["Patrull", "Post","Ahi"]
+cons = create_specific_shifts([1,5,6],"Patrull")
+tasks = ["Patrull", "Post", "Ahi"]
 
 if __name__ == "__main__":
-    main(3,names,shifts,tasks,time_shifts)
+    main(3,names,shifts,tasks,time_shifts,specifics=cons)
 
